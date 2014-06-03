@@ -1,33 +1,43 @@
+/**
+
+This Node.js script takes the enriched json vergunning files from the file 
+db and generates Turtle RDF. The rdf template is loaded and the $$foo$$ 
+variables are replaced by the values from the database. Each rdf result is stored 
+a file db called "rdfresults" where each key is the vergunning id.
+Duplicates are overwritten automatically.
+Ronald Siebes, VU University Amsterdam - rm.siebes@few.vu.nl - June 2nd 2014
+
+*/
+
 var http = require('http');
 var fs = require('fs'),
     Datastore = require('nedb')
-  , db = new Datastore({ filename: 'datastore', autoload: true });
+  , db = new Datastore({ filename: 'datastore', autoload: true })
+  , rdfdb = new Datastore({ filename: 'rdfstore', autoload: true });
 
 
-// Using a unique constraint with the index
+// Using unique constraints with the index
 db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
-		fillTemplates();
+		rdfdb.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
+				fillTemplates();
+		});
 });
 
 
 function fillTemplates(){
 
 	var template = fs.readFileSync('vergunningen-rdf-template.txt').toString();
-	//console.log(template);
+	//currently we are only interested in 'wonen' vergunningen
 	db.find({'properties.categorie':/wonen/ }, function (err, docs) {
- 		 		
- 		// console.log(JSON.stringify(docs.id));
- 		 
- 		 
  		 
 		for(var i =0 ;i<docs.length ; i++){
 			(function() {
 				var j = i;
 				var newValue = template+"";
-				process.nextTick(function() {
+				process.nextTick(function() { // this NEEDS to be done synchronously!
 				
-					//console.log(JSON.stringify(docs[i].id));
-					newValue = newValue.replace(/$$id$$/gi,docs[j].id);
+					newValue = newValue.replace('$$id$$',docs[j].id);
+					newValue = newValue.replace('$$id$$',docs[j].id);//need to be done twice
 					newValue = newValue.replace('$$titel$$',docs[j].properties.titel);
 					newValue = newValue.replace('$$beschrijving$$',docs[j].properties.beschrijving);
 					newValue = newValue.replace('$$categorie$$',docs[j].properties.categorie);
@@ -111,23 +121,37 @@ function fillTemplates(){
 					    		    newValue = newValue.replace('$$has_country$$',has_country);
 					    		    newValue = newValue.replace('$$wgs84_pos_lat$$',wgs84_pos_lat);
 					    		    newValue = newValue.replace('$$wgs84_pos_long$$',wgs84_pos_long);
-					    		    
-					    		    console.log(newValue);
+					    		    var rdfdoc = { id: docs[j].id
+							       , type: 'turtle'
+							       , value: newValue
+							    };
+							    
+							    rdfdb.findOne({ id: docs[j].id }, function (err, doc) {
+								  if(doc == null){
+								   	rdfdb.insert(rdfdoc, function (err, newDoc) {	
+								   			console.log("new rdf file added"+ rdfdoc.id);
+								   	});  
+								  	  
+								  }else{// Replace a document by another
+								  	 rdfdb.update({ id: docs[j].id },  rdfdoc, {}, function (err, numReplaced) {
+								  	 		 console.log("existing rdf file updated"+ rdfdoc.id);
+								  	 });  
+								  }
+							    });
+							    
+							   
+					    		    console.log(newValue); 
 					    });
 					}).on('error', function(e) {
 					      console.log("Got error: ", e);
+					      
 					});
 					
-					
-					//console.log(newValue);
 				});
 				
 			})();
 				
 		}
-			
-			
-			   // console.log(JSON.stringify(docs)+"-----------------------------------"); // logs all of the data in docs
 	    });
 }
   

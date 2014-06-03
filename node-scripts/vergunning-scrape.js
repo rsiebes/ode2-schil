@@ -20,10 +20,10 @@ db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
 
 // get the url from the input
 process.argv.forEach(function (val, index, array) {
-		if(val.equals('url'){
+		if(val.indexOf('url')>-1){
 			url = val;			
 		}
-}
+});
 
 http.get(url, function(res) {
     var body = '';
@@ -43,7 +43,7 @@ http.get(url, function(res) {
         			document.enrichments = [];
         	
 				db.find({ "id" : document['id']}, function (err, docs) {
-						console.log(JSON.stringify(document));
+						
 						if(!Object.keys(docs).length)
 						{
 							db.insert(document, function (err, newDoc) {
@@ -51,6 +51,7 @@ http.get(url, function(res) {
 									
 							});
 						}
+						console.log(JSON.stringify(document));
 						 
 				    });
         			});
