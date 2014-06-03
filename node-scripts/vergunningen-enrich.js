@@ -1,3 +1,15 @@
+/**
+
+This Node.js script enriches the json result from the 'vergunningen-scrape.js' 
+script with subjects from a whitelist. These subjects are added if they are 
+'detected' (currently via simple substring match) in the 'vergunningen' json 
+(to be precise: for each item the properties.beschrijving). The respective db 
+item is updated accordingly.
+Ronald Siebes, VU University Amsterdam - rm.siebes@few.vu.nl - June 2nd 2014
+
+*/
+
+
 var fs = require('fs'),
     Datastore = require('nedb')
   , db = new Datastore({ filename: 'datastore', autoload: true });

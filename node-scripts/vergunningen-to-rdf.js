@@ -1,6 +1,8 @@
+var http = require('http');
 var fs = require('fs'),
     Datastore = require('nedb')
   , db = new Datastore({ filename: 'datastore', autoload: true });
+
 
 // Using a unique constraint with the index
 db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
@@ -11,7 +13,7 @@ db.ensureIndex({ fieldName: 'id', unique: true }, function (err) {
 function fillTemplates(){
 
 	var template = fs.readFileSync('vergunningen-rdf-template.txt').toString();
-	console.log(template);
+	//console.log(template);
 	db.find({'properties.categorie':/wonen/ }, function (err, docs) {
  		 		
  		// console.log(JSON.stringify(docs.id));
@@ -79,7 +81,45 @@ function fillTemplates(){
 					}else{
 						newValue = newValue.replace('\n    dc:subject dbpedia_nl:$$whitelist3$$;','');	
 					}
-					console.log(newValue);
+					
+					
+					//get the address and long lat via Chris fancy lookup service
+					
+					var url = 'http://services.citysdk.nl/geef_adres.php?rijks_x='+rdnap_pos_x+"&rijks_y="+rdnap_pos_y;
+
+					http.get(url, function(res) {
+					    var body = '';
+					
+					    res.on('data', function(chunk) {
+						body += chunk;
+					    });
+					
+					    res.on('end', function() {
+					    		    
+					    		    var json_body = body.substring(body.indexOf('json')+4);
+					    		    var lookupResponse = JSON.parse(json_body)
+					    		    var has_street_address = lookupResponse.Address;
+					    		    var has_postal_code = lookupResponse.Postal;
+					    		    var has_city = lookupResponse.City;
+					    		    var has_country = lookupResponse.CountryCode;
+					    		    var wgs84_pos_lat = body.substring(body.indexOf('reverseGeocode?location=')+23,body.indexOf('%2C'));
+					    		    var wgs84_pos_long = body.substring(body.indexOf('%2C+')+4,body.indexOf('&distance='));
+					    		    
+					    		    newValue = newValue.replace('$$has_street_address$$',has_street_address);
+					    		    newValue = newValue.replace('$$postal_code$$',has_postal_code);
+					    		    newValue = newValue.replace('$$has_city$$',has_city);
+					    		    newValue = newValue.replace('$$has_country$$',has_country);
+					    		    newValue = newValue.replace('$$wgs84_pos_lat$$',wgs84_pos_lat);
+					    		    newValue = newValue.replace('$$wgs84_pos_long$$',wgs84_pos_long);
+					    		    
+					    		    console.log(newValue);
+					    });
+					}).on('error', function(e) {
+					      console.log("Got error: ", e);
+					});
+					
+					
+					//console.log(newValue);
 				});
 				
 			})();
