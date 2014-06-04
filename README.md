@@ -10,8 +10,8 @@ The scripts are made for <a href="http://nodejs.org">Node.js </a>, so you need t
 <h3>node dependencies</h3>
 Also you will need to install some node.js packages, like the <a href="https://github.com/louischatriot/nedb#basic-querying">NEBDB</a> file-based datastore by typing (after having installed node.js):
 
-npm install nedb --save <i>// a file-based json database</i>
-npm install temp <i>// writing temp files, needed to execute Raptor rapper RDF parser and transformation</i>
+- npm install nedb --save <i>( a file-based json database)</i>
+- npm install temp <i>( writing temp files, needed to execute Raptor rapper RDF parser and transformation)</i>
 
 <h3>other dependencies</h3>
 - You need to have a virtuoso RDF store running, with sparql 'insert data' permissions via O-Auth
