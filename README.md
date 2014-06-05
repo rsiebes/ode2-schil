@@ -12,6 +12,7 @@ Also you will need to install some node.js packages, like the <a href="https://g
 
 - npm install nedb --save <i>( a file-based json database)</i>
 - npm install temp <i>( writing temp files, needed to execute Raptor rapper RDF parser and transformation)</i>
+- npm install async <i>( some things need to be done synchronously, like db updates and some virtuoso inserts. Async is the perfect library to deal with that)</i>
 
 <h3>other dependencies</h3>
 - You need to have a virtuoso RDF store running, with sparql 'insert data' permissions via O-Auth
