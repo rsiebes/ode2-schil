@@ -113,7 +113,7 @@ function fillTemplates(){
 					    		    var has_postal_code = lookupResponse.Postal;
 					    		    var has_city = lookupResponse.City;
 					    		    var has_country = lookupResponse.CountryCode;
-					    		    var wgs84_pos_lat = body.substring(body.indexOf('reverseGeocode?location=')+23,body.indexOf('%2C'));
+					    		    var wgs84_pos_lat = body.substring(body.indexOf('reverseGeocode?location=')+24,body.indexOf('%2C'));
 					    		    var wgs84_pos_long = body.substring(body.indexOf('%2C+')+4,body.indexOf('&distance='));
 					    		    
 					    		    newValue = newValue.replace('$$has_street_address$$',has_street_address);

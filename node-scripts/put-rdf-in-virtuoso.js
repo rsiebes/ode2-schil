@@ -35,18 +35,21 @@ db.find({'virtuoso-inserted':false }, function (err, docs) {
 			temp.open('myprefix', function(err, info) {
 				  if (!err) {
 				    fs.write(info.fd, myData);
-				    fs.close(info.fd, function(err) {
-				      exec("rapper -i turtle " + info.path + "", function(err, stdout) {
-				      		      //console.log("----------"+stdout+"______________");
+				    fs.close(info.fd, function(err2) {
+				    		    console.log(info.path);
+				      exec("rapper -i turtle " + info.path + "", function(err3, stdout) {
+				      		      console.log("----------"+stdout+"______________");
 				      		      
 							query = encodeURIComponent('INSERT DATA {GRAPH <urn:chris:tests:delete:data>{'+stdout+'}}');
 							console.log(query);
+							
 							child = exec("curl -d \"format=application%2Fsparql-results%2Bjson&query="+query+"\" ode2.ronald.ops.few.vu.nl/sparql-auth --anyauth -u chris:chrisode2",
 								     function (error, stdout, stderr) {
 									 var result = JSON.parse(stdout.toString());
 									 console.log(result);
-									 counter++;
-				  next();
+									 setTimeout(function(){counter++;next(); }, 1000);//delay needed due to problems with virtuoso....i need to resolve this
+									 
+				  
 								     });
 					//util.puts(stdout.trim());
 				

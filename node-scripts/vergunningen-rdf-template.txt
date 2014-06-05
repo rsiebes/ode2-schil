@@ -40,7 +40,7 @@ ode2_locations:$$location_id$$
     wgs84_pos:lat "$$wgs84_pos_lat$$"^^xsd:nonNegativeDouble ;
     wgs84_pos:long "$$wgs84_pos_long$$"^^xsd:nonNegativeDouble ;
     a sf:Point ;
-	geo:asWKT "POINT($$rdnap_pos_x$$ $$rdnap_pos_y$$)"^^geo:wktLiteral.
+    geo:asWKT "POINT($$rdnap_pos_x$$ $$rdnap_pos_y$$)"^^geo:wktLiteral;
     vcard:hasStreetAddress "$$has_street_address$$" ;
     gn:postalCode "$$postal_code$$" ;
     gn:countryCode "NL";
