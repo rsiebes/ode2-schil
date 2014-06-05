@@ -13,6 +13,9 @@
 @prefix prov: <http://www.w3.org/ns/prov#>.
 @prefix dc: <http://purl.org/dc/elements/1.1/>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ode2_locations: <http://ode2.ronald.ops.few.vu.nl/locations/> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix sf: <http://www.opengis.net/ont/sf#> .
 
 <http://ode2.ronald.ops.few.vu.nl/bekendmakingen/$$id$$>
     dc:title "$$titel$$" ;
@@ -26,23 +29,25 @@
     rdfs:isDefinedBy <http://ode2.ronald.ops.few.vu.nl/bekendmakingen/$$id$$/about.rdf> ;
     rdfs:seeAlso <$$url$$> ;
     rdfs:seeAlso <http://geozet.koop.overheid.nl/> ;
-    sem:hasLocation _:$$location_id$$ ;
+    sem:hasLocation ode2_locations:$$location_id$$ ;
     sem:hasTimeStamp "2014-04-24T22:00:00Z";
-    sem:hasActor _:Amsterdam-stadsdeel .
+    sem:hasActor ode2_locations:Amsterdam-stadsdeel .
 
-_:$$location_id$$
-    tgn:placeType: tgn:PhysicalPlace ;
+ode2_locations:$$location_id$$
+    tgn:placeType tgn:PhysicalPlace ;
     rdnap_pos:x "$$rdnap_pos_x$$"^^xsd:nonNegativeInteger ;
     rdnap_pos:y "$$rdnap_pos_y$$"^^xsd:nonNegativeInteger ;
     wgs84_pos:lat "$$wgs84_pos_lat$$"^^xsd:nonNegativeDouble ;
     wgs84_pos:long "$$wgs84_pos_long$$"^^xsd:nonNegativeDouble ;
+    a sf:Point ;
+	geo:asWKT "POINT($$rdnap_pos_x$$ $$rdnap_pos_y$$)"^^geo:wktLiteral.
     vcard:hasStreetAddress "$$has_street_address$$" ;
     gn:postalCode "$$postal_code$$" ;
     gn:countryCode "NL";
     gn:city dbpedia_nl:amsterdam .
   
-_:Amsterdam-stadsdeel
-    tgn:placeType: tgn:AdministrativePlace ;
+ode2_locations:Amsterdam-stadsdeel
+    tgn:placeType tgn:AdministrativePlace ;
     rdfs:Label "$$stadsdeel_label$$" ;
     rdf:type  sem:Actor ;
     foaf:homepage "$$stadsdeel_homepage$$" ;

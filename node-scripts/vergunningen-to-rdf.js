@@ -45,9 +45,10 @@ function fillTemplates(){
 					newValue = newValue.replace('$$url$$',docs[j].properties.url);
 					var rdnap_pos_x = docs[j].geometry.coordinates[0];
 					newValue = newValue.replace('$$rdnap_pos_x$$',rdnap_pos_x);
+					newValue = newValue.replace('$$rdnap_pos_x$$',rdnap_pos_x);//need to be done twice
 					var rdnap_pos_y = docs[j].geometry.coordinates[1];
 					newValue = newValue.replace('$$rdnap_pos_y$$',rdnap_pos_y);
-					
+					newValue = newValue.replace('$$rdnap_pos_y$$',rdnap_pos_y);//need to be done twice
 					var location_id = "location_"+rdnap_pos_x+"_"+rdnap_pos_y;
 					newValue = newValue.replace('$$location_id$$',location_id);
 					newValue = newValue.replace('$$location_id$$',location_id);//need to be done twice
@@ -123,6 +124,7 @@ function fillTemplates(){
 					    		    newValue = newValue.replace('$$wgs84_pos_long$$',wgs84_pos_long);
 					    		    var rdfdoc = { id: docs[j].id
 							       , type: 'turtle'
+							       , 'virtuoso-inserted': false
 							       , value: newValue
 							    };
 							    
