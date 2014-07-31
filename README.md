@@ -2,7 +2,8 @@ ode2-schil
 ==========
 
 <b> Note: due to some server troubles caused by heavy rainfall last monday, the live service
-is temporarily off-line</b>
+is temporarily off-line</b> <hr/>
+
 Tools and scripts to convert open data to RDF for the Open Data Exchange II project
 
 <h2>INSTALLATION </h2>
