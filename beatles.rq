@@ -1,0 +1,7 @@
+#+ summary: Songs by The Beatles
+#+ endpoint: http://dbpedia.org/sparql
+#+ pagination: 100
+
+prefix dbo: <http://dbpedia.org/ontology/>
+prefix dbr: <http://dbpedia.org/resource/>
+select distinct ?s Where {?s dbo:musicalArtist dbr:The_Beatles }
