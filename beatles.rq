@@ -4,4 +4,4 @@
 
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix dbr: <http://dbpedia.org/resource/>
-select distinct ?s Where {?s dbo:musicalArtist dbr:The_Beatles }
+select distinct ?s Where {?s dbo:musicalArtist dbr:The_Doors }
