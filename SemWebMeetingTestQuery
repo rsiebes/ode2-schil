@@ -1,0 +1,26 @@
+#+ summary: Just to test
+#+ endpoint: http://dbpedia.org/sparql
+
+ 	
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+
+construct { 
+  ?capital dbo:blabal ?areaWater}
+
+WHERE {     ?country dbo:capital ?capital.     
+
+?capital dbo:areaTotal ?area . 
+
+{?capital rdfs:label "Berlin"@en.} 
+
+ UNION 
+
+{?capital rdfs:label "Amsterdam"@en.} 
+
+?capital dbo:areaWater ?areaWater
+
+}
